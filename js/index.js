@@ -22,11 +22,12 @@ canvas.width = canvasWidth;
 canvas.height = canvasHeight;
 
 function random(min, max) {
-	return Math.floor(Math.random() * (max - min) + min);
+	return (Math.random() * (max - min) + min);
 }
 
 function Glyph() {
 	this.lightness = 0;
+	this.lightnessDecrementer;
 	this.lifespan = 0;
 	this.drawn = false;
 	this.x;
@@ -41,16 +42,18 @@ function GlyphColumn() {
 	this.column = [];
 	this.x = random(0, canvasWidth);
 	this.drawable = true;
-	this.length = random(25, 75);
+	this.length = Math.floor(random(25, 75));
 	this.lifespan = 0;
-	this.startingY = random(0, canvasHeight / 10);
-	this.drawStart = random(0, 100);
+	this.lightnessDecrementer = random(0.2, 2);
+	this.startingY = Math.floor(random(0, canvasHeight / 10));
+	this.drawStart = Math.floor(random(0, 100));
 	for (var i = 0; i < this.length; i++) {
 		this.column.push(new Glyph());
 		this.column[i].x = this.x;
 		this.column[i].y = this.startingY;
 		this.column[i].index = i;
-		this.startingY += 15;
+		this.column[i].lightnessDecrementer = this.lightnessDecrementer;
+		this.startingY += 11;
 	}
 	pulseThruCol(this.column);
 }
@@ -69,8 +72,8 @@ Glyph.prototype.draw = function() {
 		this.lightness -= 15;
 	}
 	if (this.drawn) {
-		this.lightness -= 0.2;
-		ctx.font = "15px Georgia";
+		this.lightness -= this.lightnessDecrementer;
+		ctx.font = "11px Georgia";
 		ctx.fillStyle = "hsl(122, 100%, " + this.lightness + "%)";
 		ctx.fillText(this.glyphy, this.x, this.y);
 	}
@@ -119,7 +122,7 @@ function loop() {
 		cols[i].update();
 	}
 
-	if (timerTick % random(15, 25) == 0) {
+	if (timerTick % Math.floor(random(15, 25)) == 0) {
 		generateCol();
 	}
 	timerTick++;
