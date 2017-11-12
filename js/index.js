@@ -34,17 +34,18 @@ function Glyph() {
 	this.y;
 	this.index;
 	this.glyphy = String.fromCharCode(random(20000, 25000));
-	this.flipper = random(0, 160);
+	this.flipper = Math.floor(random(0, 160));
 	this.drawn = false;
 }
 
 function GlyphColumn() {
 	this.column = [];
 	this.x = random(0, canvasWidth);
+	this.pulser = Math.floor(random(150, 400));
 	this.drawable = true;
 	this.length = Math.floor(random(25, 75));
 	this.lifespan = 0;
-	this.lightnessDecrementer = random(0.2, 2);
+	this.lightnessDecrementer = random(0.1, 0.5);
 	this.startingY = Math.floor(random(0, canvasHeight / 10));
 	this.drawStart = Math.floor(random(0, 100));
 	for (var i = 0; i < this.length; i++) {
@@ -53,7 +54,7 @@ function GlyphColumn() {
 		this.column[i].y = this.startingY;
 		this.column[i].index = i;
 		this.column[i].lightnessDecrementer = this.lightnessDecrementer;
-		this.startingY += 11;
+		this.startingY += 15;
 	}
 	pulseThruCol(this.column);
 }
@@ -73,17 +74,20 @@ Glyph.prototype.draw = function() {
 	}
 	if (this.drawn) {
 		this.lightness -= this.lightnessDecrementer;
-		ctx.font = "11px Georgia";
+		ctx.font = "15px Georgia";
 		ctx.fillStyle = "hsl(122, 100%, " + this.lightness + "%)";
 		ctx.fillText(this.glyphy, this.x, this.y);
 	}
 };
 
 GlyphColumn.prototype.update = function() {
-	if (this.lifespan >= 500) {
+	if (this.lifespan >= 750) {
 		this.drawable = false;
 	}
 	if (this.drawable) {
+		if (timerTick % this.pulser == 0) {
+			pulseThruCol(this.column);
+		}
 		for (var i = 0; i < this.length; i++) {
 			this.column[i].drawn = true;
 			this.column[i].draw();
@@ -112,7 +116,7 @@ function loop() {
 	// this function will run endlessly with requestAnimationFrame
 	requestAnimFrame(loop);
 	ctx.globalCompositeOperation = "destination-out";
-	ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
+	ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
 	ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 	ctx.globalCompositeOperation = "lighter";
 
