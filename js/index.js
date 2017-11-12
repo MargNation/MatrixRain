@@ -50,7 +50,7 @@ function GlyphColumn() {
 		this.column[i].x = this.x;
 		this.column[i].y = this.startingY;
 		this.column[i].index = i;
-		this.startingY += 13;
+		this.startingY += 15;
 	}
 	pulseThruCol(this.column);
 }
@@ -70,7 +70,7 @@ Glyph.prototype.draw = function() {
 	}
 	if (this.drawn) {
 		this.lightness -= 0.2;
-		ctx.font = "13px Georgia";
+		ctx.font = "15px Georgia";
 		ctx.fillStyle = "hsl(122, 100%, " + this.lightness + "%)";
 		ctx.fillText(this.glyphy, this.x, this.y);
 	}
