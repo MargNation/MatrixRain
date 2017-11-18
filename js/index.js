@@ -69,8 +69,8 @@ Glyph.prototype.update = function() {
 };
 
 Glyph.prototype.draw = function() {
-	if (this.lightness > 50) {
-		this.lightness -= 15;
+	if (this.lightness > 40) {
+		this.lightness -= 8;
 	}
 	if (this.drawn) {
 		this.lightness -= this.lightnessDecrementer;
@@ -103,7 +103,7 @@ function pulseThruCol(col) {
 		(function(i) {
 			setTimeout(function() {
 				col[i].lightness = 100;
-			}, 45 * i);
+			}, 55 * i);
 		})(i);
 	}
 }
