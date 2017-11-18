@@ -43,10 +43,10 @@ function GlyphColumn() {
 	this.x = random(0, canvasWidth);
 	this.pulser = Math.floor(random(150, 400));
 	this.drawable = true;
-	this.length = Math.floor(random(25, 75));
+	this.length = Math.floor(random(15, 55));
 	this.lifespan = 0;
 	this.lightnessDecrementer = random(0.1, 0.5);
-	this.startingY = Math.floor(random(0, canvasHeight / 10));
+	this.startingY = 0;
 	this.drawStart = Math.floor(random(0, 100));
 	for (var i = 0; i < this.length; i++) {
 		this.column.push(new Glyph());
@@ -116,7 +116,7 @@ function loop() {
 	// this function will run endlessly with requestAnimationFrame
 	requestAnimFrame(loop);
 	ctx.globalCompositeOperation = "destination-out";
-	ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
+	ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
 	ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 	ctx.globalCompositeOperation = "lighter";
 
@@ -124,6 +124,12 @@ function loop() {
 
 	while (i--) {
 		cols[i].update();
+	}
+	
+	if (cols.length > 50) {
+		cols.shift();
+		cols.shift();
+		cols.shift();
 	}
 
 	if (timerTick % Math.floor(random(15, 25)) == 0) {
